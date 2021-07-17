@@ -3,6 +3,8 @@ This is a mongodb remix of the great project Astronaut (originally created by An
 
 The original idea and 99.9 % of the implementation is by Andrew and James, this is my attempt of learning an express application and MongoDB.
 
+This remix is deployed at https://naught.gq/ using the promotional credits by Digital Ocean.
+
 ## ASTRONAUT.IO
 
 A Feed of the Present
