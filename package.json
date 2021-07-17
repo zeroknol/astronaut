@@ -12,6 +12,7 @@
     "log-timestamp": "^0.3.0",
     "minimist": "^1.2.5",
     "moment": "^2.24.0",
+    "mongoose": "^5.13.3",
     "request": "^2.88.2",
     "socket.io": "^2.3.0"
   }

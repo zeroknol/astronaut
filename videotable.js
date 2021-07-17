@@ -1,29 +1,23 @@
-const csvParser = require('csv-parse'),
-    csvStringify = require('csv-stringify'),
-    fs = require('fs');
+const mongoose = require('mongoose');
+var Video = require('./video_model.js');
 
-const DATA_FILE = process.env.VIDEO_FILE,
-      COLUMNS = ['id', 'viewCount', 'duration', 'uploaded', 'fetched', 'query'];
-
-if (!DATA_FILE) {
-  throw "no video file";
+const CONNSTRING = process.env.DB_CONNSTRING;
+function connectToDatabase() {
+  const client = mongoose.connect(
+	  CONNSTRING, {
+		  useNewUrlParser: true,
+		  useUnifiedTopology: true,
+		  tls: true,
+		  tlsCAFile: "./ca-certificate.crt",
+	  });
+  return client;
 }
 
 function readVideos(cb) {
-  var videos = [];
-  var parser = csvParser({columns: COLUMNS})
-  parser.on('readable', () => {
-    let record;
-    while (record = parser.read()) {
-      record['viewCount'] = parseInt(record['viewCount']);
-      record['duration'] = parseInt(record['duration']);
-      delete record['']; // what is this thing?
-      videos.push(record);
-    }
+  const db = connectToDatabase();
+  Video.find().exec(function(err, videos){
+    cb(videos);
   });
-  parser.on('error', (err) => console.error(err.message));
-  parser.on('end', () => cb(videos));
-  fs.createReadStream(DATA_FILE).pipe(parser);
 }
 
 // expects [{id, viewCount, duration, uploaded, fetched}, ]
